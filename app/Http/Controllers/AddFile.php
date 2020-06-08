@@ -18,21 +18,22 @@ class AddFile extends Controller
         $input = $request->all(); //store the post values in input array
         $errors = array(); //inialize an empty array to store errors
 
-        if(!isset($input['file_name'])) { //if file name is empty add error to errors array
+        if (!isset($input['file_name'])) { //if file name is empty add error to errors array
             $errors[] = 'No file name';
         }
 
-        if(!isset($input['file_content'])) { ////if file content is empty add error to errors array
+        if (!isset($input['file_content'])) { //if file content is empty add error to errors array
             $errors[] = 'No file content';
         }
 
         //if there are errors return error response
         if (sizeof($errors) > 0) {
-            return json_encode(['code' => '400', 'errors' => $errors]);
+            return response()
+                ->json(['code' => '400', 'errors' => $errors]);
         }
 
-        //if there are no errors save the file to storage/app/public folder and return response
         Storage::disk('local')->put($input['file_name'], $input['file_content']);
-        return json_encode(['code' => '201', 'message' => 'Page added successfully']);
+        return response()
+            ->json(['code' => '201', 'message' => 'Page added successfully']);
     }
 }
